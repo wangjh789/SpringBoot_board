@@ -4,9 +4,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,12 +14,19 @@ import javax.persistence.Id;
 public class Member {
 
     @Id @GeneratedValue
+    @Column(name = "member_id")
     private Long id;
-    private String username;
+    private String nickname;
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writer",cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     public static Member createMember(String username){
         Member member = new Member();
-        member.username = username;
+        member.nickname = username;
         return member;
     }
 }

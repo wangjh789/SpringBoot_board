@@ -1,6 +1,7 @@
 package com.woowang.board.repository;
 
 import com.woowang.board.domain.Member;
+import com.woowang.board.domain.Post;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,23 +14,30 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MemberRepositoryTest {
+public class PostRepositoryTest {
 
+    @Autowired PostRepository postRepository;
     @Autowired MemberRepository memberRepository;
 
     @Test
     @Transactional
-    @Rollback(value = false)
-    public void testMember() throws Exception {
+//    @Rollback(value = false)
+    public void 게시글_생성() throws Exception {
         //given
-        Member member = Member.createMember("user1");
-        Long savedId = memberRepository.save(member);
+        Member member = Member.createMember("kim1");
+        Long memberId = memberRepository.save(member);
 
+        Post post = Post.createPost(member,"title","content");
         //when
-        Member findMember = memberRepository.findOne(savedId);
+        Long postId = postRepository.save(post);
+        Post findOne = postRepository.findOne(postId);
 
         //then
-        assertEquals(findMember.getNickname(),"user1");
+        assertEquals(findOne.getContent(),"content");
+        assertEquals(findOne.getTitle(),"title");
+        assertEquals(findOne.getWriter().getId(),memberId);
     }
+
+
 
 }
