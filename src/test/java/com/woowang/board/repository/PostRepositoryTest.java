@@ -1,5 +1,6 @@
 package com.woowang.board.repository;
 
+import com.woowang.board.domain.Category;
 import com.woowang.board.domain.Member;
 import com.woowang.board.domain.Post;
 import org.junit.Test;
@@ -18,6 +19,7 @@ public class PostRepositoryTest {
 
     @Autowired PostRepository postRepository;
     @Autowired MemberRepository memberRepository;
+    @Autowired CategoryRepository categoryRepository;
 
     @Test
     @Transactional
@@ -27,13 +29,20 @@ public class PostRepositoryTest {
         Member member = Member.createMember("kim1");
         Long memberId = memberRepository.save(member);
 
-        Post post = Post.createPost(member,"title","content");
+        Category category = new Category();
+        category.setTitle("Free");
+        categoryRepository.save(category);
+
+
+
+        Post post = Post.createPost(member,category,"title","content");
         //when
         Long postId = postRepository.save(post);
         Post findOne = postRepository.findOne(postId);
 
         //then
         assertEquals(findOne.getContent(),"content");
+        assertEquals(findOne.getCategory().getTitle(),"Free");
         assertEquals(findOne.getTitle(),"title");
         assertEquals(findOne.getWriter().getId(),memberId);
     }

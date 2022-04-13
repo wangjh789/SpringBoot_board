@@ -1,5 +1,6 @@
 package com.woowang.board.repository;
 
+import com.woowang.board.domain.Category;
 import com.woowang.board.domain.Comment;
 import com.woowang.board.domain.Member;
 import com.woowang.board.domain.Post;
@@ -20,6 +21,7 @@ public class CommentRepositoryTest {
     @Autowired CommentRepository commentRepository;
     @Autowired PostRepository postRepository;
     @Autowired MemberRepository memberRepository;
+    @Autowired CategoryRepository categoryRepository;
 
     @Transactional
 //    @Rollback(value = false)
@@ -30,8 +32,14 @@ public class CommentRepositoryTest {
         Member member = Member.createMember("kim1");
         Long memberId = memberRepository.save(member);
         Member findMember = memberRepository.findOne(memberId);
+
+        //카테고리 생성
+        Category category = new Category();
+        category.setTitle("Free");
+        categoryRepository.save(category);
+
         //게시글 생성
-        Post post = Post.createPost(member,"title","content");
+        Post post = Post.createPost(member,category,"title","content");
         Long postId = postRepository.save(post);
         Post findPost = postRepository.findOne(postId);
 

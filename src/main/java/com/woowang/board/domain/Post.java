@@ -31,6 +31,10 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime postDate;
 
@@ -39,12 +43,17 @@ public class Post {
         this.writer = member;
         member.getPosts().add(this);
     }
+    public void setCategory(Category category){
+        this.category = category;
+        category.getPosts().add(this);
+    }
 
     //==생성 메서드==//
-    public static Post createPost(Member member,String title,String content){
+    public static Post createPost(Member member,Category category,String title,String content){
         Post post = new Post();
 
         post.setWriter(member);
+        post.setCategory(category);
         post.title = title;
         post.content = content;
         post.postDate = LocalDateTime.now();
