@@ -1,11 +1,8 @@
 package com.woowang.board.controller;
 
-import com.woowang.board.domain.Member;
 import com.woowang.board.dto.MemberDetailDto;
 import com.woowang.board.service.MemberService;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,9 +48,31 @@ public class MemberController {
         }
     }
 
+    @PutMapping("/api/v1/member/{id}")
+    public ResponseEntity<?> updateNick(@PathVariable("id") Long memberId,
+                                        @RequestBody @Valid UpdateNickRequestDto requestDto){
+        try{
+            Long id = memberService.updateNick(memberId, requestDto.getNickname());
+            List<Long> dtos = new ArrayList<>();
+            dtos.add(id);
+
+            ResponseDto<Long> responseDto = ResponseDto.<Long>builder().data(dtos).build();
+            return ResponseEntity.ok().body(responseDto);
+
+        }catch(Exception e){
+            ResponseDto<Long> responseDto = ResponseDto.
+                    <Long>builder().error(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseDto);
+        }
+    }
+
 
     @Data
     static class JoinMemberRequestDto {
+        private String nickname;
+    }
+    @Data
+    static class UpdateNickRequestDto{
         private String nickname;
     }
 

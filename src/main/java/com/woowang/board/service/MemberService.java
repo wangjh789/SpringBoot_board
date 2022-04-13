@@ -54,4 +54,5 @@ public class MemberService {
         Member member = memberRepository.findOne(memberId);
         return new MemberDetailDto(member);
     }
+
 }

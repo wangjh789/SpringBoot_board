@@ -39,11 +39,11 @@ public class Post {
     private LocalDateTime postDate;
 
     //== 연관관계 메서드 ==//
-    public void setWriter(Member member){
+    private void setWriter(Member member){
         this.writer = member;
         member.getPosts().add(this);
     }
-    public void setCategory(Category category){
+    private void setCategory(Category category){
         this.category = category;
         category.getPosts().add(this);
     }

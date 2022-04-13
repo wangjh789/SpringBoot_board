@@ -31,11 +31,11 @@ public class Comment {
     private LocalDateTime commentDate;
 
     //== 양뱡향 연관관계 메서드 ==//
-    public void setWriter(Member member){
+    private void setWriter(Member member){
         this.writer = member;
         member.getComments().add(this);
     }
-    public void setPost(Post post){
+    private void setPost(Post post){
         this.post = post;
         post.getComments().add(this);
     }
@@ -50,5 +50,9 @@ public class Comment {
         comment.commentDate = LocalDateTime.now();
 
         return comment;
+    }
+    //== 수정 메서드 ==//
+    public void updateComment(String content){
+        this.content = content;
     }
 }

@@ -1,6 +1,8 @@
 package com.woowang.board.controller;
 
+import com.woowang.board.domain.Post;
 import com.woowang.board.dto.PostDetailDto;
+import com.woowang.board.dto.PostDto;
 import com.woowang.board.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +23,7 @@ public class PostController {
     @PostMapping("/api/v1/post")
     public ResponseEntity<?> write(@RequestBody @Valid WritePostRequestDto writePostDto){
         try{
-            Long memberId = 0L;
+            Long memberId = 1L;
 
             Long saved = postService.writePost(
                     memberId, writePostDto.getCategoryId(), writePostDto.getTitle(), writePostDto.getContent());
@@ -54,6 +56,21 @@ public class PostController {
             return ResponseEntity.badRequest().body(responseDto);
         }
     }
+    @GetMapping("/api/v1/post")
+    public ResponseEntity<?> getPosts(
+            @RequestParam(value = "offset",defaultValue = "0") int offset,
+            @RequestParam(value = "limit",defaultValue = "100") int limit
+    ){
+        try{
+            List<PostDto> posts = postService.findAll(offset, limit);
+            ResponseDto<PostDto> responseDto = ResponseDto.<PostDto>builder().data(posts).build();
+            return ResponseEntity.ok().body(responseDto);
+        }catch(Exception e){
+            ResponseDto<PostDto> responseDto = ResponseDto.<PostDto>builder().error(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseDto);
+        }
+    }
+
 
     @Data
     @AllArgsConstructor

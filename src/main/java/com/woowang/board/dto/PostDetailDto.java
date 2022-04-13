@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @Data
 public class PostDetailDto {
 
+    private String category;
     private String title;
     private String content;
     private String writer;
@@ -18,6 +19,7 @@ public class PostDetailDto {
     private LocalDateTime date;
 
     public PostDetailDto(Post post){
+        category = post.getCategory().getTitle();
         title = post.getTitle();
         content = post.getContent();
         writer = post.getWriter().getNickname();

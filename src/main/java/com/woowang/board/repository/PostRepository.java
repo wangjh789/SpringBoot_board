@@ -22,5 +22,26 @@ public class PostRepository {
         return em.find(Post.class,postId);
     }
 
+    public List<Post> findOneWithCategory(Long postId){
+        return em.createQuery(
+                "select p from Post p " +
+                        "join fetch p.category c " +
+                        "join fetch p.writer w "+
+                        "where p.id = :postId"
+                ,Post.class)
+                .setParameter("postId",postId)
+                .getResultList();
+    }
+    public List<Post> findAllWithCategory(int offset, int limit){
+        return em.createQuery(
+                        "select p from Post p " +
+                                "join fetch p.category c " +
+                                "join fetch p.writer w "
+                        ,Post.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
 
 }
