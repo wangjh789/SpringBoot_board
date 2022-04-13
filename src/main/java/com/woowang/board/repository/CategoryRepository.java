@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class CategoryRepository {
@@ -19,5 +20,11 @@ public class CategoryRepository {
 
     public Category findOne(Long categoryId){
         return em.find(Category.class,categoryId);
+    }
+
+    public List<Category> findByTitle(String title){
+        return em.createQuery("select c from Category c where c.title= :title",Category.class)
+                .setParameter("title",title)
+                .getResultList();
     }
 }

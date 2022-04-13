@@ -16,6 +16,8 @@ public class Member {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
+
+    @Column(unique = true,nullable = false)
     private String nickname;
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
@@ -24,9 +26,13 @@ public class Member {
     @OneToMany(mappedBy = "writer",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public static Member createMember(String username){
+    public static Member createMember(String nickname){
         Member member = new Member();
-        member.nickname = username;
+        member.nickname = nickname;
         return member;
+    }
+
+    public void updateNick(String newNick){
+        this.nickname = newNick;
     }
 }

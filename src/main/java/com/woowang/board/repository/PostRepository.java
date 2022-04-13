@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class PostRepository {
@@ -20,5 +21,6 @@ public class PostRepository {
     public Post findOne(Long postId){
         return em.find(Post.class,postId);
     }
+
 
 }
