@@ -29,7 +29,7 @@ public class CommentRepositoryTest {
     public void 댓글_작성() throws Exception {
         //given
         //유저 생성
-        Member member = Member.createMember("kim1");
+        Member member = Member.createMember("kim1","email","password");
         Long memberId = memberRepository.save(member);
         Member findMember = memberRepository.findOne(memberId);
 

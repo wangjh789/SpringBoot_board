@@ -26,7 +26,7 @@ public class PostRepositoryTest {
 //    @Rollback(value = false)
     public void 게시글_생성() throws Exception {
         //given
-        Member member = Member.createMember("kim1");
+        Member member = Member.createMember("kim1","email","password");
         Long memberId = memberRepository.save(member);
 
         Category category = new Category();

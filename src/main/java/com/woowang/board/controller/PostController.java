@@ -1,6 +1,5 @@
 package com.woowang.board.controller;
 
-import com.woowang.board.domain.Post;
 import com.woowang.board.dto.PostDetailDto;
 import com.woowang.board.dto.PostDto;
 import com.woowang.board.service.PostService;
@@ -8,10 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,18 +20,13 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/api/v1/post")
-    public ResponseEntity<?> write(@RequestBody @Valid WritePostRequestDto writePostDto){
+    public ResponseEntity<?> write(@RequestBody @Valid WritePostRequestDto writePostDto,
+                                   @AuthenticationPrincipal String memberId){
         try{
-            Long memberId = 1L;
-
             Long saved = postService.writePost(
-                    memberId, writePostDto.getCategoryId(), writePostDto.getTitle(), writePostDto.getContent());
-            List<Long> dtos = new ArrayList<>();
-            dtos.add(saved);
+                    Long.valueOf(memberId), writePostDto.getCategoryId(), writePostDto.getTitle(), writePostDto.getContent());
 
-            ResponseDto<Long> responseDto = ResponseDto.
-                    <Long>builder().data(dtos).build();
-            return ResponseEntity.ok().body(responseDto);
+            return ResponseEntity.ok().body(saved);
 
         }catch(Exception e){
             ResponseDto<Long> responseDto = ResponseDto.
@@ -44,12 +38,8 @@ public class PostController {
     public ResponseEntity<?> viewDetail(@PathVariable("id") Long id){
         try{
             PostDetailDto postDto = postService.findOneWithComments(id);
-            List<PostDetailDto> dtos = new ArrayList<>();
-            dtos.add(postDto);
 
-            ResponseDto<PostDetailDto> responseDto = ResponseDto.
-                    <PostDetailDto>builder().data(dtos).build();
-            return ResponseEntity.ok().body(responseDto);
+            return ResponseEntity.ok().body(postDto);
         }catch(Exception e){
             ResponseDto<PostDetailDto> responseDto = ResponseDto.
                     <PostDetailDto>builder().error(e.getMessage()).build();
@@ -70,7 +60,6 @@ public class PostController {
             return ResponseEntity.badRequest().body(responseDto);
         }
     }
-
 
     @Data
     @AllArgsConstructor

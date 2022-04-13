@@ -7,8 +7,11 @@ import com.woowang.board.repository.CommentRepository;
 import com.woowang.board.repository.MemberRepository;
 import com.woowang.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +38,11 @@ public class CommentService {
      * 댓글 수정
      */
     @Transactional
-    public Long update(Long commentId,String content){
+    public Long update(Long memberId,Long commentId,String content){
         Comment comment = commentRepository.findOne(commentId);
+        if(!Objects.equals(comment.getWriter().getId(), memberId)){
+            throw new AuthenticationCredentialsNotFoundException("권한이 없습니다.");
+        }
         comment.updateComment(content);
         return commentId;
     }

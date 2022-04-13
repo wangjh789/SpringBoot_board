@@ -33,11 +33,11 @@ public class InitDB {
         private final CommentService commentService;
 
         public void initDB1(){
-            Long joinId1 = memberService.join("userA");
-            Long joinId2 = memberService.join("userB");
-            Long joinId3 = memberService.join("userC");
-            Long joinId4 = memberService.join("userD");
-            Long joinId5 = memberService.join("userE");
+            Long joinId1 = memberService.join("userA","email1","password");
+            Long joinId2 = memberService.join("userB","email2","password");
+            Long joinId3 = memberService.join("userC","email3","password");
+            Long joinId4 = memberService.join("userD","email4","password");
+            Long joinId5 = memberService.join("userE","email5","password");
             Long categoryA = categoryService.createCategory("A");
             Long categoryB = categoryService.createCategory("B");
 

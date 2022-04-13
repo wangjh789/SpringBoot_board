@@ -22,7 +22,7 @@ public class MemberRepositoryTest {
     @Rollback(value = false)
     public void testMember() throws Exception {
         //given
-        Member member = Member.createMember("user1");
+        Member member = Member.createMember("user1","email","password");
         Long savedId = memberRepository.save(member);
 
         //when

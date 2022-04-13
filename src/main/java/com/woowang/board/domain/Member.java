@@ -20,15 +20,23 @@ public class Member {
     @Column(unique = true,nullable = false)
     private String nickname;
 
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "writer",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public static Member createMember(String nickname){
+    public static Member createMember(String nickname,String email,String password){
         Member member = new Member();
         member.nickname = nickname;
+        member.email = email;
+        member.password = password;
         return member;
     }
 
