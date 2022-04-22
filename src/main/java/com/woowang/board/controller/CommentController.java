@@ -16,7 +16,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/api/v1/post/{postId}/comment")
+    @PostMapping("/api/v1/posts/{postId}/comments")
     public ResponseEntity<?> writeComment(@PathVariable("postId") Long postId,
                                           @RequestBody @Valid WriteCommentRequest commentRequest){
         try{

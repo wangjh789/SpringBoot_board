@@ -1,5 +1,6 @@
 package com.woowang.board.controller;
 
+import com.woowang.board.domain.Member;
 import com.woowang.board.dto.MemberDetailDto;
 import com.woowang.board.service.MemberService;
 import lombok.Data;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/api/v1/member")
+    @PostMapping("/api/v1/members")
     public ResponseEntity<?> join(@RequestBody @Valid JoinMemberRequestDto requestDto){
         try{
             Long joinId = memberService.join(requestDto.nickname);
@@ -32,7 +34,21 @@ public class MemberController {
             return ResponseEntity.badRequest().body(responseDto);
         }
     }
-    @GetMapping("/api/v1/member/{id}")
+    @GetMapping("/api/v1/members")
+    public ResponseEntity<?> findMembers(){
+        try{
+            List<MemberDto> memberDtos =
+                    memberService.findAll().stream().map(MemberDto::new).collect(Collectors.toList());
+
+            ResponseDto<MemberDto> responseDto = ResponseDto.<MemberDto>builder().data(memberDtos).build();
+            return ResponseEntity.ok().body(responseDto);
+        }catch(Exception e){
+            ResponseDto<Long> responseDto = ResponseDto.
+                    <Long>builder().error(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseDto);
+        }
+    }
+    @GetMapping("/api/v1/members/{id}")
     public ResponseEntity<?> findOne(@PathVariable("id") Long id){
         try{
             MemberDetailDto memberDto = memberService.findOne(id);
@@ -48,7 +64,7 @@ public class MemberController {
         }
     }
 
-    @PutMapping("/api/v1/member/{id}")
+    @PutMapping("/api/v1/members/{id}")
     public ResponseEntity<?> updateNick(@PathVariable("id") Long memberId,
                                         @RequestBody @Valid UpdateNickRequestDto requestDto){
         try{
@@ -65,7 +81,16 @@ public class MemberController {
             return ResponseEntity.badRequest().body(responseDto);
         }
     }
+    @Data
+    static class MemberDto{
+        private Long id;
+        private String nick;
 
+        MemberDto(Member member){
+            this.id = member.getId();
+            this.nick = member.getNickname();
+        }
+    }
 
     @Data
     static class JoinMemberRequestDto {

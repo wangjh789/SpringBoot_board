@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/workspace/board/board
+    url: jdbc:h2:mem:board
     username : sa
     password :
     driver-class-name: org.h2.Driver
@@ -12,6 +12,7 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size : 100
+    open-in-view: false
 
 logging:
   level:

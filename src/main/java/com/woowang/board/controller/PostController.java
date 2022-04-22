@@ -20,7 +20,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/api/v1/post")
+    @PostMapping("/api/v1/posts")
     public ResponseEntity<?> write(@RequestBody @Valid WritePostRequestDto writePostDto){
         try{
             Long memberId = 1L;
@@ -40,7 +40,7 @@ public class PostController {
             return ResponseEntity.badRequest().body(responseDto);
         }
     }
-    @GetMapping("/api/v1/post/{id}")
+    @GetMapping("/api/v1/posts/{id}")
     public ResponseEntity<?> viewDetail(@PathVariable("id") Long id){
         try{
             PostDetailDto postDto = postService.findOneWithComments(id);
@@ -56,7 +56,7 @@ public class PostController {
             return ResponseEntity.badRequest().body(responseDto);
         }
     }
-    @GetMapping("/api/v1/post")
+    @GetMapping("/api/v1/posts")
     public ResponseEntity<?> getPosts(
             @RequestParam(value = "offset",defaultValue = "0") int offset,
             @RequestParam(value = "limit",defaultValue = "100") int limit
