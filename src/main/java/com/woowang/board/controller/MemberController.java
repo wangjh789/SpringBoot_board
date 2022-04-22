@@ -18,69 +18,50 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final MemberService memberService;
+//
+//    @GetMapping("/api/v1/ex")
+//    public void exTest(){
+//       throw new IllegalStateException("test");
+//    }
 
     @PostMapping("/api/v1/members")
     public ResponseEntity<?> join(@RequestBody @Valid JoinMemberRequestDto requestDto){
-        try{
-            Long joinId = memberService.join(requestDto.nickname);
-            List<Long> dtos = new ArrayList<>();
-            dtos.add(joinId);
+        Long joinId = memberService.join(requestDto.nickname);
+        List<Long> dtos = new ArrayList<>();
+        dtos.add(joinId);
 
-            ResponseDto<Long> responseDto = ResponseDto.<Long>builder().data(dtos).build();
-            return ResponseEntity.ok().body(responseDto);
-        }catch(Exception e){
-            ResponseDto<Long> responseDto = ResponseDto.
-                    <Long>builder().error(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(responseDto);
-        }
+        ResponseDto<Long> responseDto = ResponseDto.<Long>builder().data(dtos).build();
+        return ResponseEntity.ok().body(responseDto);
     }
     @GetMapping("/api/v1/members")
     public ResponseEntity<?> findMembers(){
-        try{
-            List<MemberDto> memberDtos =
-                    memberService.findAll().stream().map(MemberDto::new).collect(Collectors.toList());
+        List<MemberDto> memberDtos =
+                memberService.findAll().stream().map(MemberDto::new).collect(Collectors.toList());
 
-            ResponseDto<MemberDto> responseDto = ResponseDto.<MemberDto>builder().data(memberDtos).build();
-            return ResponseEntity.ok().body(responseDto);
-        }catch(Exception e){
-            ResponseDto<Long> responseDto = ResponseDto.
-                    <Long>builder().error(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(responseDto);
-        }
+        ResponseDto<MemberDto> responseDto = ResponseDto.<MemberDto>builder().data(memberDtos).build();
+        return ResponseEntity.ok().body(responseDto);
     }
     @GetMapping("/api/v1/members/{id}")
     public ResponseEntity<?> findOne(@PathVariable("id") Long id){
-        try{
-            MemberDetailDto memberDto = memberService.findOne(id);
-            List<MemberDetailDto> dtos = new ArrayList<>();
-            dtos.add(memberDto);
+        MemberDetailDto memberDto = memberService.findOne(id);
+        List<MemberDetailDto> dtos = new ArrayList<>();
+        dtos.add(memberDto);
 
-            ResponseDto<MemberDetailDto> responseDto = ResponseDto.<MemberDetailDto>builder().data(dtos).build();
-            return ResponseEntity.ok().body(responseDto);
-        }catch(Exception e){
-            ResponseDto<MemberDetailDto> responseDto = ResponseDto.
-                    <MemberDetailDto>builder().error(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(responseDto);
-        }
+        ResponseDto<MemberDetailDto> responseDto = ResponseDto.<MemberDetailDto>builder().data(dtos).build();
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @PutMapping("/api/v1/members/{id}")
     public ResponseEntity<?> updateNick(@PathVariable("id") Long memberId,
                                         @RequestBody @Valid UpdateNickRequestDto requestDto){
-        try{
-            Long id = memberService.updateNick(memberId, requestDto.getNickname());
-            List<Long> dtos = new ArrayList<>();
-            dtos.add(id);
+        Long id = memberService.updateNick(memberId, requestDto.getNickname());
+        List<Long> dtos = new ArrayList<>();
+        dtos.add(id);
 
-            ResponseDto<Long> responseDto = ResponseDto.<Long>builder().data(dtos).build();
-            return ResponseEntity.ok().body(responseDto);
-
-        }catch(Exception e){
-            ResponseDto<Long> responseDto = ResponseDto.
-                    <Long>builder().error(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(responseDto);
-        }
+        ResponseDto<Long> responseDto = ResponseDto.<Long>builder().data(dtos).build();
+        return ResponseEntity.ok().body(responseDto);
     }
+
     @Data
     static class MemberDto{
         private Long id;
